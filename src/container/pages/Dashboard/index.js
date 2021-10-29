@@ -18,8 +18,7 @@ class Dashboard extends Component {
             keterangan : '',
             status: '',
             todoId: '', 
-            isModalOpen: false,
-            isModalStatusOpen: false,
+           
         };
     }
     

@@ -6,42 +6,89 @@ import { connect } from 'react-redux';
 import Button from '../../../component/atoms/button'
 
 
+const validEmailRegex = RegExp(/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i);
+const validateForm = (errors) => {
+    let valid = true;
+    Object.values(errors).forEach(
+        (val) => val.length > 0 && (valid=false)
+    );
+    return valid;
+}
+
 class Login extends Component {
 
-    state = {
-        email :'',
-        password : ''
+    constructor(props){
+        super(props)
+        this.state = {
+            email :'',
+            password : '',
+            errors:{
+                email: '',
+                password: ''
+            }
+        };
     }
+  
 
     handleChangeText = (e) => {
+        // this.setState({
+        //     [e.target.id]: e.target.value,
+        // })
+        e.preventDefault();
+        const {name, value} = e.target;
+        let errors = this.state.errors;
+
+        switch (name){
+            case 'email':
+                errors.email =
+                    validEmailRegex.test(value)
+                    ? ''
+                    : 'Email Not Valid';
+                break;
+            case 'password':
+                errors.password = 
+                    value.length < 8
+                    ? 'Password harus panjang 8 karakter'
+                    : '';
+                break;
+            default:
+                break;
+        }
         this.setState({
-            [e.target.id]: e.target.value,
-        })
+            errors, [name]: value
+        });
     }
 
 
   
-    handleLoginSubmit = async () => {
+    handleLoginSubmit = async (e) => {
         // console.log('email:', this.state.email)
         // console.log('password:', this.state.password)
-        const {email, password} = this.state;
-        const {history} = this.props;
-        console.log('Data sebelum dikirim', email, password);
-        const res = await this.props.loginUser({email, password}).catch(err => err);
-        if(res){
-            console.log("Login berhasil", res);
-            localStorage.setItem('userData', JSON.stringify(res))
-            this.setState({
-                email: '',
-                password: ''
-            })
-            history.push('/dashboard')
+        e.preventDefault();
+        if(validateForm(this.state.errors)){
+            const {email, password} = this.state;
+            const {history} = this.props;
+            console.log('Data sebelum dikirim', email, password);
+            const res = await this.props.loginUser({email, password}).catch(err => err);
+            if(res){
+                console.log("Login berhasil", res);
+                localStorage.setItem('userData', JSON.stringify(res))
+                this.setState({
+                    email: '',
+                    password: ''
+                })
+                history.push('/dashboard')
+            } else {
+                console.log("Login Gagal")
+            }
         } else {
-            console.log("Login Gagal")
+            console.error('Invalid Form')
         }
+     
     }
 
     render(){
+        const {errors} =this.state;
         return(
             <div className="container">
                 <div className="col-12 col-md-6 offset-md-3">
@@ -50,12 +97,16 @@ class Login extends Component {
                     <CardTitle>Login</CardTitle>
                         <div className="inputs">
                             <Label>Email</Label>
-                            <input className="input"  type="text" id="email" onChange={this.handleChangeText} value={this.state.email} />
+                            <input className="input"  type="text" id="email" name="email" onChange={this.handleChangeText} value={this.state.email} />
+                            {errors.email.length > 0 &&
+                            <span>{errors.email}</span>}
                         </div>
                        
                         <div className="inputs">
-                        <Label>Password</Label>
-                        <input className="input"  type="password" id="password" onChange={this.handleChangeText} value={this.state.password}/>
+                            <Label>Password</Label>
+                            <input className="input"  type="password" id="password" name="password" onChange={this.handleChangeText} value={this.state.password}/>
+                            {errors.password.length > 0 && 
+                            <span>{errors.password}</span>}
                         </div>
 
                         <div className="row cardfooter">
