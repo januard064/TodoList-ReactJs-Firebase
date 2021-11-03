@@ -3,6 +3,7 @@ import { CardBody, Label, CardTitle, CardText } from 'reactstrap';
 import './Dashboard.css';
 import { addDataToFirebase, getDataFromFirebase, updateDataFirebase, deleteDataFirebase, updateStatusFirebase, logOut } from '../../../config/redux/action';
 import { connect } from 'react-redux';
+import { FadeTransform } from 'react-animation-components'
 
 
 class Dashboard extends Component {
@@ -118,125 +119,130 @@ class Dashboard extends Component {
     render(){
         const { todos } = this.props;
         return(
+            <FadeTransform
+                in
+                transformProps={{
+                    exitTransform: 'scale(0.5) translateY(-50%)'
+                }} >
             <div>
-            <div className="container">
-                <div className="col-12 col-md-6 offset-md-3">
-                
-                    <CardBody className="cardbody">
-                        <div className="inputs">
-                            <Label>Title</Label>
-                            <input className="input"  type="text" id="title" onChange={this.handleTodoValue} value = {this.state.title} />
-                        </div>
-
-                        <div className="row inputs">
-                            <div className="col-12 col-md-5 waktu">
-                                <Label>Tanggal</Label>
-                                <input className="input"  type="date" id="tanggal" onChange={this.handleTodoValue} value={this.state.tanggal} />
-                            </div>
-                            <div className="col-5 col-md-3 waktu">
-                                <Label>Waktu</Label>
-                                <input  className="waktuStart"  type="time" id="waktuStart" onChange={this.handleTodoValue} value={this.state.waktuStart} />
-                            </div>
-
-                            <div className="col-2 col-md-1 waktu">
-                                <Label  className="akhir">Waktu</Label>
-                               <div className="hubung">-</div>
-                            </div>
-
-                            <div className="col-5 col-md-3">
-                                <Label className="akhir">s</Label>
-                                <input  className="waktuStart"  type="time" id="waktuFinish" onChange={this.handleTodoValue} value={this.state.waktuFinish} />
-                            </div>
-                        </div>
+                <div className="container">
+                    <div className="col-12 col-md-6 offset-md-3">
                     
-                        <div className="inputs">
-                        <Label>Keterangan</Label>
-                        <textarea className="input"  type="keterangan" id="keterangan" onChange={this.handleTodoValue} value={this.state.keterangan} />
-                        </div>
-
-                        <div className="cardfooter">
-                            <div className="row">
-                                {/* <button onClick={this.handleTodoSubmit}>Tambah</button> */}
-                                {
-                                    this.state.textButton === 'UPDATE' ?(
-                                        <div className="col-12 col-md-6">
-                                            <button onClick={this.cancelUpdate} >Cancel</button>
-                                        </div>
-                                    ) : <div className="col-12 col-md-6" />
-                                }
-                                <div className="col-12 col-md-6">
-                                    <button onClick={this.handleTodoSubmit}>{this.state.textButton}</button>
-                                </div>
-
+                        <CardBody className="cardbody">
+                            <div className="inputs">
+                                <Label>Title</Label>
+                                <input className="input"  type="text" id="title" onChange={this.handleTodoValue} value = {this.state.title} />
                             </div>
-                        </div>
-                    </CardBody>
-                </div>
 
-                <hr />
-                {
-                 todos.length > 0 ? (
-                     <div className="row align-items-start">
-                         { todos.map(todo => {
-                             return (
-                                <div className="col-12 col-md-6" key={todo.id}  >
-                                    <CardBody className="cardList">
-                                        <div className="row">
-                                            <div className="col-9">
-                                                    <CardTitle>{todo.data.title}</CardTitle>
-                                            </div>
-                                            <div className="col-3 edit" onClick={() => this.updateData(todo)} >
-                                                edit
-                                            </div>
-                                            
-                                        </div> 
-                                        <div className="row">
-                                            <div className="col-8 cardTeks">
-                                                <CardText>{todo.data.tanggal}</CardText>
-                                            </div>
-                                            <div className="col-4 time cardTeks">
-                                                <CardText>{todo.data.waktuStart} - {todo.data.waktuFinish}</CardText>
-                                            </div>
-                                        </div>
-                                        <CardText className="cardTeks">{todo.data.keterangan}</CardText>
-                                        <div className="row">
-                                            <div className="col-3">
-                                                <button onClick={(e) => this.deleteData(e, todo)}>Delete</button>
-                                            </div>
-                                            <div className="col-4 offset-5">
-                                                {/* <button onClick={(e) => this.updateStatus(e, todo)}>{todo.data.status}</button> */}
-                                                {
-                                                    todo.data.status === 'Incomplete' ?(
-                                                            <div>
-                                                                <button onClick={(e) => this.updateStatus(e, todo)}>{todo.data.status}</button>
-                                                            </div>
-                                                    ): <div>
-                                                                <button disabled>{todo.data.status}</button>
-
-                                                    </div>
-                                                }
-                                            </div>
-                                        </div>
-                                    </CardBody>
+                            <div className="row inputs">
+                                <div className="col-12 col-md-5 waktu">
+                                    <Label>Tanggal</Label>
+                                    <input className="input"  type="date" id="tanggal" onChange={this.handleTodoValue} value={this.state.tanggal} />
                                 </div>
-                             )
+                                <div className="col-5 col-md-3 waktu">
+                                    <Label>Waktu</Label>
+                                    <input  className="waktuStart"  type="time" id="waktuStart" onChange={this.handleTodoValue} value={this.state.waktuStart} />
+                                </div>
 
-                         })
-                           
-                         }
+                                <div className="col-2 col-md-1 waktu">
+                                    <Label  className="akhir">Waktu</Label>
+                                <div className="hubung">-</div>
+                                </div>
+
+                                <div className="col-5 col-md-3">
+                                    <Label className="akhir">s</Label>
+                                    <input  className="waktuStart"  type="time" id="waktuFinish" onChange={this.handleTodoValue} value={this.state.waktuFinish} />
+                                </div>
+                            </div>
                         
-                     </div> 
-                  ): <div>Belum ada kegiatan</div>  
-                }
-            </div> 
-          
-                <div>
-                    <button onClick={this.logout}>Logout</button>
-                </div>
+                            <div className="inputs">
+                            <Label>Keterangan</Label>
+                            <textarea className="input"  type="keterangan" id="keterangan" onChange={this.handleTodoValue} value={this.state.keterangan} />
+                            </div>
+
+                            <div className="cardfooter">
+                                <div className="row">
+                                    {/* <button onClick={this.handleTodoSubmit}>Tambah</button> */}
+                                    {
+                                        this.state.textButton === 'UPDATE' ?(
+                                            <div className="col-12 col-md-6">
+                                                <button onClick={this.cancelUpdate} >Cancel</button>
+                                            </div>
+                                        ) : <div className="col-12 col-md-6" />
+                                    }
+                                    <div className="col-12 col-md-6">
+                                        <button onClick={this.handleTodoSubmit}>{this.state.textButton}</button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </CardBody>
+                    </div>
+
+                    <hr />
+                    {
+                    todos.length > 0 ? (
+                        <div className="row align-items-start">
+                            { todos.map(todo => {
+                                return (
+                                    <div className="col-12 col-md-6" key={todo.id}  >
+                                        <CardBody className="cardList">
+                                            <div className="row">
+                                                <div className="col-9">
+                                                        <CardTitle>{todo.data.title}</CardTitle>
+                                                </div>
+                                                <div className="col-3 edit" onClick={() => this.updateData(todo)} >
+                                                    edit
+                                                </div>
+                                                
+                                            </div> 
+                                            <div className="row">
+                                                <div className="col-8 cardTeks">
+                                                    <CardText>{todo.data.tanggal}</CardText>
+                                                </div>
+                                                <div className="col-4 time cardTeks">
+                                                    <CardText>{todo.data.waktuStart} - {todo.data.waktuFinish}</CardText>
+                                                </div>
+                                            </div>
+                                            <CardText className="cardTeks">{todo.data.keterangan}</CardText>
+                                            <div className="row">
+                                                <div className="col-3">
+                                                    <button onClick={(e) => this.deleteData(e, todo)}>Delete</button>
+                                                </div>
+                                                <div className="col-4 offset-5">
+                                                    {/* <button onClick={(e) => this.updateStatus(e, todo)}>{todo.data.status}</button> */}
+                                                    {
+                                                        todo.data.status === 'Incomplete' ?(
+                                                                <div>
+                                                                    <button onClick={(e) => this.updateStatus(e, todo)}>{todo.data.status}</button>
+                                                                </div>
+                                                        ): <div>
+                                                                    <button disabled>{todo.data.status}</button>
+
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </CardBody>
+                                    </div>
+                                )
+
+                            })
+                            
+                            }
+                            
+                        </div> 
+                    ): <div>Belum ada kegiatan</div>  
+                    }
+                </div> 
+            
+                    <div>
+                        <button onClick={this.logout}>Logout</button>
+                    </div>
             </div>
             
             
-                
+           </FadeTransform>     
         )
     }
 }
