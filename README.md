@@ -1,3 +1,11 @@
+# To Do List
+This todo list project is built with reactjs and uses the API provided by firebase to manage todo list data with CRUD concepts.
+To be able to use this project, the user must register and login by following the form validation in order to store and manage the data todo list that he wants to build.
+
+### About Firebase
+visit the following link : https://firebase.google.com/
+
+
 ## Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
