@@ -4,7 +4,8 @@ import {CardBody, Label, CardTitle} from 'reactstrap';
 import './Register.css'
 import { registerUserFirebase } from '../../../config/redux/action';
 import { connect } from 'react-redux';
-import Button from '../../../component/atoms/button'
+import Button from '../../../component/atoms/button';
+import { Link } from 'react-router-dom';
 
 
 const validEmailRegex = RegExp(/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i);
@@ -66,6 +67,7 @@ class Register extends Component {
         e.preventDefault();
         if(validateForm(this.state.errors)){
             const {email, password} = this.state;
+            const { history } = this.props;
             console.log('Data sebelum dikirim', email, password);
             const res = await this.props.registerUser({email, password}).catch(err => err)
             if(res){
@@ -73,6 +75,7 @@ class Register extends Component {
                     email : '',
                     password : ''
                 })
+                history.push('/login')
             }
         } else {
             console.error('Invalid Form')
@@ -103,10 +106,10 @@ class Register extends Component {
                         </div>
 
                         <div className="row cardfooter">
-                            {/* <div className="col-12 col-md-9 info">
-                                Belum punya akun ? Register
-                            </div> */}
-                            <div className="col-12 col-md-3 offset-md-9 btn">
+                            <div className="col-12 col-md-9 info">
+                                Sudah punya akun ? <Link to="/login">Login</Link>
+                            </div>
+                            <div className="col-12 col-md-3 btn">
                                 {/* <button onClick={this.handleRegisterSubmit}>Register</button> */}
                                 <Button onClick ={this.handleRegisterSubmit} title="Register" loading={this.props.isLoading} />
                             </div>

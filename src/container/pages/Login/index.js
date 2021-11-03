@@ -3,7 +3,9 @@ import {CardBody, Label, CardTitle} from 'reactstrap';
 import './Login.css'
 import { loginUserFirebase } from '../../../config/redux/action';
 import { connect } from 'react-redux';
-import Button from '../../../component/atoms/button'
+import Button from '../../../component/atoms/button';
+import { Link } from 'react-router-dom'
+
 
 
 const validEmailRegex = RegExp(/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i);
@@ -111,9 +113,9 @@ class Login extends Component {
 
                         <div className="row cardfooter">
                             <div className="col-12 col-md-9 info">
-                                Belum punya akun ? Register
+                                Belum punya akun ? <Link to="/register"> Register </Link> 
                             </div>
-                            <div className="col-12 col-md-3 offset-md-9 btn">
+                            <div className="col-12 col-md-3 btn">
                                 {/* <button onClick={this.handleLoginSubmit}>Register</button> */}
                                 <Button onClick ={this.handleLoginSubmit} title="Login" loading={this.props.isLoading} />
                             </div>
